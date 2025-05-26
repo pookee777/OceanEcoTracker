@@ -391,7 +391,123 @@ class EnvironmentalDashboard {
         if (score < 0) score = 0;
         if (score > 10) score = 10;
         
-        document.getElementById('env-score').textContent = score.toFixed(1) + '/10'; // Check every second
+        document.getElementById('env-score').textContent = score.toFixed(1) + '/10';
+    }
+
+    async loadModel() {
+        const modelStatus = document.getElementById('model-status');
+        
+        try {
+            modelStatus.textContent = 'Loading AI model...';
+            modelStatus.className = 'model-status loading';
+            
+            // Load the model from the local files
+            const modelURL = './attached_assets/model.json';
+            const metadataURL = './attached_assets/metadata.json';
+            
+            this.model = await tmImage.load(modelURL, metadataURL);
+            
+            modelStatus.textContent = 'AI model ready for plastic detection';
+            modelStatus.className = 'model-status ready';
+            
+        } catch (error) {
+            console.error('Error loading model:', error);
+            modelStatus.textContent = 'Error loading AI model. Please check model files.';
+            modelStatus.className = 'model-status error';
+        }
+    }
+
+    async startDetection() {
+        if (!this.model) {
+            alert('AI model not loaded yet. Please wait for model to load.');
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { width: 224, height: 224 } 
+            });
+            
+            const video = document.getElementById('webcam');
+            video.srcObject = stream;
+            
+            this.isDetecting = true;
+            document.getElementById('start-detection').style.display = 'none';
+            document.getElementById('stop-detection').style.display = 'inline-flex';
+            document.getElementById('detection-status').textContent = 'Detecting...';
+            
+            this.detectLoop();
+            
+        } catch (error) {
+            console.error('Error accessing webcam:', error);
+            alert('Error accessing webcam. Please ensure camera permissions are granted.');
+        }
+    }
+
+    stopDetection() {
+        this.isDetecting = false;
+        
+        const video = document.getElementById('webcam');
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+            video.srcObject = null;
+        }
+        
+        document.getElementById('start-detection').style.display = 'inline-flex';
+        document.getElementById('stop-detection').style.display = 'none';
+        document.getElementById('detection-status').textContent = 'Stopped';
+        document.getElementById('classification-result').textContent = 'None';
+        document.getElementById('confidence-score').textContent = '0%';
+    }
+
+    async detectLoop() {
+        if (!this.isDetecting || !this.model) return;
+        
+        const video = document.getElementById('webcam');
+        
+        if (video.readyState === 4) {
+            try {
+                const predictions = await this.model.predict(video);
+                
+                // Find the highest confidence prediction
+                let bestPrediction = predictions[0];
+                for (let i = 1; i < predictions.length; i++) {
+                    if (predictions[i].probability > bestPrediction.probability) {
+                        bestPrediction = predictions[i];
+                    }
+                }
+                
+                const confidence = Math.round(bestPrediction.probability * 100);
+                document.getElementById('confidence-score').textContent = `${confidence}%`;
+                document.getElementById('classification-result').textContent = bestPrediction.className;
+                
+                if (bestPrediction.className === 'Plastic' && confidence > 70) {
+                    document.getElementById('detection-status').textContent = 'Plastic Detected!';
+                    
+                    // Auto-increment plastic if enabled
+                    if (document.getElementById('auto-increment').checked) {
+                        const currentPlastic = parseFloat(document.getElementById('plastic-input').value);
+                        const newPlastic = currentPlastic + 1;
+                        
+                        document.getElementById('plastic-input').value = newPlastic;
+                        document.getElementById('plastic-slider').value = newPlastic;
+                        document.getElementById('plastic-display').textContent = newPlastic;
+                        
+                        this.updatePlasticData();
+                    }
+                } else if (bestPrediction.className === 'Not Plastic' && confidence > 70) {
+                    document.getElementById('detection-status').textContent = 'No Plastic Detected';
+                } else {
+                    document.getElementById('detection-status').textContent = 'Analyzing...';
+                }
+                
+            } catch (error) {
+                console.error('Error during prediction:', error);
+            }
+        }
+        
+        // Continue detection loop
+        setTimeout(() => this.detectLoop(), 1000);
     }
 }
 

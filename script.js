@@ -21,7 +21,6 @@ class EnvironmentalDashboard {
     async init() {
         this.setupEventListeners();
         this.initializeCharts();
-        await this.loadModel();
         this.updateInitialValues();
     }
 
@@ -36,9 +35,7 @@ class EnvironmentalDashboard {
         // Plastic Controls
         this.setupInputSync('plastic-input', 'plastic-slider', 'plastic-display', this.updatePlasticData.bind(this));
         
-        // Detection Controls
-        document.getElementById('start-detection').addEventListener('click', this.startDetection.bind(this));
-        document.getElementById('stop-detection').addEventListener('click', this.stopDetection.bind(this));
+
     }
 
     setupInputSync(inputId, sliderId, displayId, callback) {
@@ -260,6 +257,9 @@ class EnvironmentalDashboard {
         const ph = parseFloat(document.getElementById('ph-input').value);
         const turbidity = parseFloat(document.getElementById('turbidity-input').value);
         
+        // Update water quality status
+        this.updateWaterStatus(ph, turbidity);
+        
         this.addDataPoint(ph, turbidity, 'water');
         this.updateChart('waterQuality', [this.phData, this.turbidityData]);
     }
@@ -269,6 +269,12 @@ class EnvironmentalDashboard {
         const capture = (co2 / 1000) * 80; // Formula: (CO₂ / 1000) × 80g
         
         document.getElementById('co2-capture').textContent = capture.toFixed(1);
+        
+        // Update efficiency rate
+        this.updateEfficiencyRate(co2);
+        
+        // Update overview metrics
+        document.getElementById('total-co2').textContent = capture.toFixed(1) + ' grams';
         
         this.addDataPoint(co2, capture, 'co2');
         this.updateChart('co2', [this.co2Data, this.captureData]);
@@ -280,8 +286,12 @@ class EnvironmentalDashboard {
         
         document.getElementById('fuel-generated').textContent = fuel.toFixed(1);
         
+        // Update overview metrics
+        document.getElementById('total-fuel').textContent = fuel.toFixed(1) + ' mL';
+        
         this.addDataPoint(plastic, fuel, 'plastic');
         this.updateChart('fuel', [this.plasticData, this.fuelData]);
+        this.updateEnvironmentalScore();
     }
 
     addDataPoint(value1, value2, type) {
@@ -332,113 +342,53 @@ class EnvironmentalDashboard {
         }
     }
 
-    async loadModel() {
-        const modelStatus = document.getElementById('model-status');
+    updateWaterStatus(ph, turbidity) {
+        let status = 'Good';
         
-        try {
-            modelStatus.textContent = 'Loading AI model...';
-            modelStatus.className = 'model-status loading';
-            
-            // Load the model from the local files
-            const modelURL = './model/model.json';
-            const metadataURL = './model/metadata.json';
-            
-            this.model = await tmImage.load(modelURL, metadataURL);
-            
-            modelStatus.textContent = 'AI model ready for plastic detection';
-            modelStatus.className = 'model-status ready';
-            
-        } catch (error) {
-            console.error('Error loading model:', error);
-            modelStatus.textContent = 'Error loading AI model. Please check model files.';
-            modelStatus.className = 'model-status error';
+        // Determine water quality based on pH and turbidity
+        if (ph < 6.5 || ph > 8.5 || turbidity > 50) {
+            status = 'Poor';
+        } else if (ph < 7.0 || ph > 8.0 || turbidity > 20) {
+            status = 'Fair';
         }
+        
+        document.getElementById('water-status').textContent = status;
     }
 
-    async startDetection() {
-        if (!this.model) {
-            alert('AI model not loaded yet. Please wait for model to load.');
-            return;
-        }
-
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { width: 224, height: 224 } 
-            });
-            
-            const video = document.getElementById('webcam');
-            video.srcObject = stream;
-            
-            this.isDetecting = true;
-            document.getElementById('start-detection').style.display = 'none';
-            document.getElementById('stop-detection').style.display = 'inline-flex';
-            document.getElementById('detection-status').textContent = 'Detecting...';
-            
-            this.detectLoop();
-            
-        } catch (error) {
-            console.error('Error accessing webcam:', error);
-            alert('Error accessing webcam. Please ensure camera permissions are granted.');
-        }
+    updateEfficiencyRate(co2) {
+        // Calculate efficiency rate based on CO2 levels
+        let efficiency = (co2 / 5000) * 100; // Assume 5000 ppm is max
+        if (efficiency > 100) efficiency = 100;
+        
+        document.getElementById('efficiency-rate').textContent = efficiency.toFixed(1) + '%';
     }
 
-    stopDetection() {
-        this.isDetecting = false;
+    updateEnvironmentalScore() {
+        const ph = parseFloat(document.getElementById('ph-input').value);
+        const turbidity = parseFloat(document.getElementById('turbidity-input').value);
+        const co2 = parseFloat(document.getElementById('co2-input').value);
+        const plastic = parseFloat(document.getElementById('plastic-input').value);
         
-        const video = document.getElementById('webcam');
-        if (video.srcObject) {
-            video.srcObject.getTracks().forEach(track => track.stop());
-            video.srcObject = null;
-        }
+        // Calculate environmental score (0-10)
+        let score = 10;
         
-        document.getElementById('start-detection').style.display = 'inline-flex';
-        document.getElementById('stop-detection').style.display = 'none';
-        document.getElementById('detection-status').textContent = 'Stopped';
-        document.getElementById('confidence-score').textContent = '0%';
-    }
-
-    async detectLoop() {
-        if (!this.isDetecting || !this.model) return;
+        // Deduct points for poor water quality
+        if (ph < 6.5 || ph > 8.5) score -= 2;
+        if (turbidity > 50) score -= 2;
         
-        const video = document.getElementById('webcam');
+        // Deduct points for high CO2
+        if (co2 > 1000) score -= 1;
+        if (co2 > 2000) score -= 1;
         
-        if (video.readyState === 4) {
-            try {
-                const predictions = await this.model.predict(video);
-                
-                // Find the plastic prediction
-                const plasticPrediction = predictions.find(p => p.className === 'Plastic');
-                
-                if (plasticPrediction) {
-                    const confidence = Math.round(plasticPrediction.probability * 100);
-                    document.getElementById('confidence-score').textContent = `${confidence}%`;
-                    
-                    if (confidence > 70) {
-                        document.getElementById('detection-status').textContent = 'Plastic Detected!';
-                        
-                        // Auto-increment plastic if enabled
-                        if (document.getElementById('auto-increment').checked) {
-                            const currentPlastic = parseFloat(document.getElementById('plastic-input').value);
-                            const newPlastic = currentPlastic + 1;
-                            
-                            document.getElementById('plastic-input').value = newPlastic;
-                            document.getElementById('plastic-slider').value = newPlastic;
-                            document.getElementById('plastic-display').textContent = newPlastic;
-                            
-                            this.updatePlasticData();
-                        }
-                    } else {
-                        document.getElementById('detection-status').textContent = 'No Plastic Detected';
-                    }
-                }
-                
-            } catch (error) {
-                console.error('Error during prediction:', error);
-            }
-        }
+        // Add points for plastic recycling
+        if (plastic > 500) score += 1;
+        if (plastic > 1000) score += 1;
         
-        // Continue detection loop
-        setTimeout(() => this.detectLoop(), 1000); // Check every second
+        // Ensure score is within bounds
+        if (score < 0) score = 0;
+        if (score > 10) score = 10;
+        
+        document.getElementById('env-score').textContent = score.toFixed(1) + '/10'; // Check every second
     }
 }
 

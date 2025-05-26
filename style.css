@@ -310,28 +310,111 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-.model-status {
-    padding: 15px;
+.overview-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
     background: hsl(var(--surface-variant));
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 500;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.water-stat .stat-icon {
+    background: linear-gradient(135deg, #2196F3, #03A9F4);
+}
+
+.co2-stat .stat-icon {
+    background: linear-gradient(135deg, #4CAF50, #8BC34A);
+}
+
+.fuel-stat .stat-icon {
+    background: linear-gradient(135deg, #FF9800, #FFC107);
+}
+
+.stat-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: hsl(var(--on-surface));
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: hsl(var(--primary));
+    margin-bottom: 3px;
+}
+
+.stat-content small {
+    color: hsl(var(--on-surface-variant));
+    font-size: 0.85rem;
+}
+
+.proposal-info {
+    background: hsl(var(--surface-variant));
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.proposal-info h3 {
+    margin-bottom: 15px;
+    color: hsl(var(--primary));
+}
+
+.proposal-info p {
+    margin-bottom: 20px;
+    line-height: 1.6;
     color: hsl(var(--on-surface-variant));
 }
 
-.model-status.loading {
-    background: hsl(var(--warning) / 0.1);
-    color: hsl(var(--warning));
+.impact-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
 }
 
-.model-status.ready {
-    background: hsl(var(--success) / 0.1);
+.metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: hsl(var(--surface));
+    border-radius: 8px;
+    border-left: 4px solid hsl(var(--primary));
+}
+
+.metric-label {
+    font-weight: 500;
+    color: hsl(var(--on-surface));
+}
+
+.metric-value {
+    font-weight: bold;
     color: hsl(var(--success));
-}
-
-.model-status.error {
-    background: hsl(var(--error) / 0.1);
-    color: hsl(var(--error));
+    font-size: 1.1rem;
 }
 
 .dashboard-footer {

@@ -106,53 +106,72 @@
                 </div>
             </div>
 
-            <!-- Plastic Detection Panel -->
-            <div class="panel plastic-detection">
+            <!-- System Overview Panel -->
+            <div class="panel system-overview">
                 <div class="panel-header">
-                    <h2><i class="fas fa-camera"></i> AI Plastic Detection</h2>
+                    <h2><i class="fas fa-chart-line"></i> System Overview</h2>
                 </div>
                 <div class="panel-content">
-                    <div class="camera-container">
-                        <video id="webcam" autoplay muted></video>
-                        <canvas id="canvas" style="display: none;"></canvas>
+                    <div class="overview-stats">
+                        <div class="stat-item water-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Water Quality</h3>
+                                <div class="stat-value" id="water-status">Good</div>
+                                <small>Based on pH and turbidity levels</small>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-item co2-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>CO₂ Efficiency</h3>
+                                <div class="stat-value" id="efficiency-rate">8.0%</div>
+                                <small>Algae capture efficiency rate</small>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-item fuel-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-recycle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Conversion Rate</h3>
+                                <div class="stat-value" id="conversion-rate">80.0%</div>
+                                <small>Plastic to fuel efficiency</small>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="detection-controls">
-                        <button id="start-detection" class="btn btn-primary">
-                            <i class="fas fa-play"></i> Start Detection
-                        </button>
-                        <button id="stop-detection" class="btn btn-secondary" style="display: none;">
-                            <i class="fas fa-stop"></i> Stop Detection
-                        </button>
-                    </div>
-                    
-                    <div class="detection-results">
-                        <div class="result-item">
-                            <span>Detection Status:</span>
-                            <span id="detection-status">Ready</span>
+                    <div class="proposal-info">
+                        <h3>Environmental Impact Simulation</h3>
+                        <p>This dashboard demonstrates real-time monitoring capabilities for your environmental project proposal. Adjust the values above to see how different parameters affect overall system performance.</p>
+                        
+                        <div class="impact-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Total CO₂ Captured:</span>
+                                <span class="metric-value" id="total-co2">32.0 grams</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Fuel Produced:</span>
+                                <span class="metric-value" id="total-fuel">80.0 mL</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Environmental Score:</span>
+                                <span class="metric-value" id="env-score">7.5/10</span>
+                            </div>
                         </div>
-                        <div class="result-item">
-                            <span>Confidence:</span>
-                            <span id="confidence-score">0%</span>
-                        </div>
-                        <div class="result-item">
-                            <span>Auto-increment plastic:</span>
-                            <label class="switch">
-                                <input type="checkbox" id="auto-increment">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div id="model-status" class="model-status">
-                        Loading AI model...
                     </div>
                 </div>
             </div>
         </div>
 
         <footer class="dashboard-footer">
-            <p>&copy; 2024 Environmental Monitoring System. Powered by TensorFlow.js and Chart.js</p>
+            <p>&copy; 2024 Environmental Monitoring System. Interactive Dashboard for Project Proposals</p>
         </footer>
     </div>
 

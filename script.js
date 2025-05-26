@@ -269,7 +269,7 @@ class EnvironmentalDashboard {
 
     updateCO2Data() {
         const co2 = parseFloat(document.getElementById('co2-input').value);
-        const capture = (co2 / 1000) * 80; // Formula: (CO₂ / 1000) × 80g
+        const capture = (co2 / 1000) * 0.05 *1.96; // Formula: (CO₂ / 1000) × 80g
         
         document.getElementById('co2-capture').textContent = capture.toFixed(1);
         

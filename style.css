@@ -3,7 +3,7 @@
     --light-teal: 180 39% 75%; /* #8ECAE6 - Light teal */
     --medium-teal: 174 44% 51%; /* #219EBC - Medium teal */
     --dark-teal: 184 77% 34%; /* #023047 - Dark teal */
-
+    
     --primary: 174 44% 51%; /* Medium teal */
     --secondary: 180 39% 75%; /* Light teal */
     --background: 60 36% 96%; /* Cream background */
@@ -32,9 +32,9 @@ body {
 }
 
 .container {
-    max-width: 1800px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 12px;
+    padding: 20px;
 }
 
 .dashboard-header {
@@ -63,9 +63,9 @@ body {
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 16px;
-    margin-bottom: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
 }
 
 .system-overview {
@@ -193,8 +193,8 @@ body {
 }
 
 .chart-container {
-    height: 320px;
-    margin-top: 15px;
+    height: 250px;
+    margin-top: 20px;
 }
 
 .camera-container {
@@ -496,27 +496,27 @@ input:checked + .slider:before {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-
+    
     .dashboard-header h1 {
         font-size: 2rem;
         flex-direction: column;
         gap: 10px;
     }
-
+    
     .input-with-slider {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
     }
-
+    
     .input-with-slider input[type="number"] {
         flex: none;
     }
-
+    
     .detection-controls {
         flex-direction: column;
     }
-
+    
     .result-item {
         flex-direction: column;
         align-items: flex-start;
@@ -528,15 +528,15 @@ input:checked + .slider:before {
     .container {
         padding: 15px;
     }
-
+    
     .panel-content {
         padding: 20px;
     }
-
+    
     .dashboard-header {
         padding: 20px;
     }
-
+    
     .dashboard-header h1 {
         font-size: 1.5rem;
     }

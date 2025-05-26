@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environmental Monitoring Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="dashboard-header">
+            <h1><i class="fas fa-leaf"></i> Environmental Monitoring Dashboard</h1>
+            <p>Real-time environmental data monitoring and plastic detection system</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Water Quality Panel -->
+            <div class="panel water-quality">
+                <div class="panel-header">
+                    <h2><i class="fas fa-tint"></i> Water Quality Monitor</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="input-group">
+                        <label for="ph-input">pH Level (0-14)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="ph-input" min="0" max="14" step="0.1" value="7.0">
+                            <input type="range" id="ph-slider" min="0" max="14" step="0.1" value="7.0">
+                        </div>
+                        <div class="current-value">Current: <span id="ph-display">7.0</span></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="turbidity-input">Turbidity (NTU)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="turbidity-input" min="0" max="1000" step="1" value="10">
+                            <input type="range" id="turbidity-slider" min="0" max="1000" step="1" value="10">
+                        </div>
+                        <div class="current-value">Current: <span id="turbidity-display">10</span> NTU</div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="waterQualityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CO2 and Algae Panel -->
+            <div class="panel co2-algae">
+                <div class="panel-header">
+                    <h2><i class="fas fa-seedling"></i> CO₂ & Algae Capture</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="input-group">
+                        <label for="co2-input">CO₂ Concentration (ppm)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="co2-input" min="0" max="5000" step="10" value="400">
+                            <input type="range" id="co2-slider" min="0" max="5000" step="10" value="400">
+                        </div>
+                        <div class="current-value">Current: <span id="co2-display">400</span> ppm</div>
+                    </div>
+                    
+                    <div class="calculation-result">
+                        <h3>Algae CO₂ Capture</h3>
+                        <div class="result-value">
+                            <span id="co2-capture">32.0</span> grams
+                        </div>
+                        <small>Formula: (CO₂ / 1000) × 80g</small>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="co2Chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plastic to Fuel Panel -->
+            <div class="panel plastic-fuel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-recycle"></i> Plastic-to-Fuel Conversion</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="input-group">
+                        <label for="plastic-input">Plastic Collected (grams)</label>
+                        <div class="input-with-slider">
+                            <input type="number" id="plastic-input" min="0" max="10000" step="1" value="100">
+                            <input type="range" id="plastic-slider" min="0" max="10000" step="1" value="100">
+                        </div>
+                        <div class="current-value">Current: <span id="plastic-display">100</span> grams</div>
+                    </div>
+                    
+                    <div class="calculation-result">
+                        <h3>Fuel Generated</h3>
+                        <div class="result-value">
+                            <span id="fuel-generated">80.0</span> mL
+                        </div>
+                        <small>Formula: plastic × 0.8 mL/g</small>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="fuelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plastic Detection Panel -->
+            <div class="panel plastic-detection">
+                <div class="panel-header">
+                    <h2><i class="fas fa-camera"></i> AI Plastic Detection</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="camera-container">
+                        <video id="webcam" autoplay muted></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                    </div>
+                    
+                    <div class="detection-controls">
+                        <button id="start-detection" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Start Detection
+                        </button>
+                        <button id="stop-detection" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-stop"></i> Stop Detection
+                        </button>
+                    </div>
+                    
+                    <div class="detection-results">
+                        <div class="result-item">
+                            <span>Detection Status:</span>
+                            <span id="detection-status">Ready</span>
+                        </div>
+                        <div class="result-item">
+                            <span>Confidence:</span>
+                            <span id="confidence-score">0%</span>
+                        </div>
+                        <div class="result-item">
+                            <span>Auto-increment plastic:</span>
+                            <label class="switch">
+                                <input type="checkbox" id="auto-increment">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="model-status" class="model-status">
+                        Loading AI model...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>&copy; 2024 Environmental Monitoring System. Powered by TensorFlow.js and Chart.js</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

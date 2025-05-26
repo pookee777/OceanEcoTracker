@@ -1,0 +1,45 @@
+Manual Input Functionality
+This dashboard allows users to manually adjust all key sensor values through number input fields or sliders. Every time the user changes a value, the display updates in real time, and charts reflect the new data point. This gives users full control over the simulation without relying on automatic or random data changes.
+
+1. 🌊 Water Quality Panel (Manual Inputs)
+Users can manually enter water pH and turbidity values to observe how water quality changes over time.
+
+Input fields allow users to enter pH (0–14) and turbidity (in NTU).
+
+The updated values are shown live on the screen.
+
+Charts automatically log and visualize the pH and turbidity over time.
+
+2. 🌿 CO₂ Level & Algae Capture Panel (Manual Inputs)
+This panel lets users input CO₂ levels and instantly see how much CO₂ algae might capture based on that level.
+
+Users enter CO₂ concentration (ppm) via a number input.
+
+Algae CO₂ capture is automatically calculated using a fixed formula (e.g., capture = (co2 / 1000) * 80g).
+
+A real-time chart logs CO₂ values and shows the trend over time.
+
+3. 🔄 Plastic-to-Fuel Conversion Panel (Manual Inputs)
+This section helps simulate how much fuel is produced based on plastic collected.
+
+A number input lets users enter grams of plastic.
+
+The system automatically converts this to fuel using a formula (e.g., 1g plastic = 0.8mL fuel).
+
+Results are shown instantly on the dashboard and plotted in a fuel generation chart.
+
+4. 📊 Dynamic Chart Updates (Chart.js)
+Each change made through the input fields is logged in a graph using Chart.js, helping visualize the impact of different variables over time.
+
+pH, turbidity, CO₂, and fuel generation each have their own time-series chart.
+
+Charts update as soon as values change, giving a live, interactive feel.
+
+5. 🧠 Plastic Detection with TensorFlow.js (Optional)
+If the Teachable Machine model is loaded, the dashboard can detect plastic objects using your webcam.
+
+Webcam input is processed by the TensorFlow.js model.
+
+Detected plastic can optionally auto-increment the “Plastic Collected” value.
+
+The detection result and confidence score are displayed on the screen.

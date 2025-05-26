@@ -21,6 +21,7 @@ class EnvironmentalDashboard {
     async init() {
         this.setupEventListeners();
         this.initializeCharts();
+        await this.loadModel();
         this.updateInitialValues();
     }
 
@@ -35,7 +36,9 @@ class EnvironmentalDashboard {
         // Plastic Controls
         this.setupInputSync('plastic-input', 'plastic-slider', 'plastic-display', this.updatePlasticData.bind(this));
         
-
+        // Detection Controls
+        document.getElementById('start-detection').addEventListener('click', this.startDetection.bind(this));
+        document.getElementById('stop-detection').addEventListener('click', this.stopDetection.bind(this));
     }
 
     setupInputSync(inputId, sliderId, displayId, callback) {
@@ -92,8 +95,8 @@ class EnvironmentalDashboard {
                     {
                         label: 'pH Level',
                         data: this.phData,
-                        borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        borderColor: 'hsl(174, 44%, 51%)',
+                        backgroundColor: 'hsla(174, 44%, 51%, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4
@@ -101,8 +104,8 @@ class EnvironmentalDashboard {
                     {
                         label: 'Turbidity (NTU)',
                         data: this.turbidityData,
-                        borderColor: '#2196F3',
-                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                        borderColor: 'hsl(180, 39%, 75%)',
+                        backgroundColor: 'hsla(180, 39%, 75%, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4,
@@ -147,8 +150,8 @@ class EnvironmentalDashboard {
                     {
                         label: 'CO₂ Concentration (ppm)',
                         data: this.co2Data,
-                        borderColor: '#FF9800',
-                        backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                        borderColor: 'hsl(184, 77%, 34%)',
+                        backgroundColor: 'hsla(184, 77%, 34%, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4
@@ -156,8 +159,8 @@ class EnvironmentalDashboard {
                     {
                         label: 'Algae Capture (g)',
                         data: this.captureData,
-                        borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        borderColor: 'hsl(174, 44%, 51%)',
+                        backgroundColor: 'hsla(174, 44%, 51%, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4,
@@ -201,8 +204,8 @@ class EnvironmentalDashboard {
                     {
                         label: 'Plastic Collected (g)',
                         data: this.plasticData,
-                        borderColor: '#9C27B0',
-                        backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                        borderColor: 'hsl(180, 39%, 75%)',
+                        backgroundColor: 'hsla(180, 39%, 75%, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4
@@ -210,8 +213,8 @@ class EnvironmentalDashboard {
                     {
                         label: 'Fuel Generated (mL)',
                         data: this.fuelData,
-                        borderColor: '#F44336',
-                        backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                        borderColor: 'hsl(184, 77%, 34%)',
+                        backgroundColor: 'hsla(184, 77%, 34%, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4,

@@ -1,16 +1,21 @@
 :root {
-    --primary: 142 69% 58%; /* #4CAF50 */
-    --secondary: 201 79% 46%; /* #2196F3 */
-    --background: 210 11% 98%; /* #F5F7FA */
-    --surface: 0 0% 100%; /* #FFFFFF */
-    --surface-variant: 210 11% 96%; /* #F1F3F4 */
-    --on-surface: 213 9% 35%; /* #546E7A */
-    --on-surface-variant: 213 9% 50%; /* #78909C */
-    --border: 213 12% 88%; /* #E1E8ED */
-    --success: 122 39% 49%; /* #4CAF50 */
-    --warning: 36 100% 50%; /* #FF9800 */
-    --error: 4 90% 58%; /* #F44336 */
-    --shadow: 210 11% 15% / 0.1; /* rgba(55, 71, 79, 0.1) */
+    --cream: 60 36% 96%; /* #FFFBDE - Light cream */
+    --light-teal: 180 39% 75%; /* #8ECAE6 - Light teal */
+    --medium-teal: 174 44% 51%; /* #219EBC - Medium teal */
+    --dark-teal: 184 77% 34%; /* #023047 - Dark teal */
+    
+    --primary: 174 44% 51%; /* Medium teal */
+    --secondary: 180 39% 75%; /* Light teal */
+    --background: 60 36% 96%; /* Cream background */
+    --surface: 0 0% 100%; /* White */
+    --surface-variant: 60 20% 92%; /* Slightly darker cream */
+    --on-surface: 184 77% 34%; /* Dark teal text */
+    --on-surface-variant: 174 44% 40%; /* Darker medium teal */
+    --border: 180 25% 85%; /* Light teal border */
+    --success: 174 44% 51%; /* Medium teal for success */
+    --warning: 36 100% 50%; /* Orange for warnings */
+    --error: 4 90% 58%; /* Red for errors */
+    --shadow: 184 77% 20% / 0.1; /* Dark teal shadow */
 }
 
 * {
@@ -77,7 +82,7 @@ body {
 }
 
 .panel-header {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    background: linear-gradient(135deg, hsl(var(--medium-teal)), hsl(var(--dark-teal)));
     color: white;
     padding: 20px;
 }
@@ -310,6 +315,62 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+.camera-container {
+    position: relative;
+    margin-bottom: 20px;
+    background: hsl(var(--surface-variant));
+    border-radius: 12px;
+    overflow: hidden;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#webcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detection-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.detection-results {
+    background: hsl(var(--surface-variant));
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.model-status {
+    padding: 15px;
+    background: hsl(var(--surface-variant));
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    color: hsl(var(--on-surface-variant));
+}
+
+.model-status.loading {
+    background: hsl(var(--warning) / 0.1);
+    color: hsl(var(--warning));
+}
+
+.model-status.ready {
+    background: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+}
+
+.model-status.error {
+    background: hsl(var(--error) / 0.1);
+    color: hsl(var(--error));
+}
+
 .overview-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -343,15 +404,15 @@ input:checked + .slider:before {
 }
 
 .water-stat .stat-icon {
-    background: linear-gradient(135deg, #2196F3, #03A9F4);
+    background: linear-gradient(135deg, hsl(var(--light-teal)), hsl(var(--medium-teal)));
 }
 
 .co2-stat .stat-icon {
-    background: linear-gradient(135deg, #4CAF50, #8BC34A);
+    background: linear-gradient(135deg, hsl(var(--medium-teal)), hsl(var(--dark-teal)));
 }
 
 .fuel-stat .stat-icon {
-    background: linear-gradient(135deg, #FF9800, #FFC107);
+    background: linear-gradient(135deg, hsl(var(--dark-teal)), hsl(var(--medium-teal)));
 }
 
 .stat-content h3 {

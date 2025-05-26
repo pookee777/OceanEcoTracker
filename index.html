@@ -106,6 +106,54 @@
                 </div>
             </div>
 
+            <!-- Plastic Detection Panel -->
+            <div class="panel plastic-detection">
+                <div class="panel-header">
+                    <h2><i class="fas fa-camera"></i> AI Plastic Detection</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="camera-container">
+                        <video id="webcam" autoplay muted></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                    </div>
+                    
+                    <div class="detection-controls">
+                        <button id="start-detection" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Start Detection
+                        </button>
+                        <button id="stop-detection" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-stop"></i> Stop Detection
+                        </button>
+                    </div>
+                    
+                    <div class="detection-results">
+                        <div class="result-item">
+                            <span>Detection Status:</span>
+                            <span id="detection-status">Ready</span>
+                        </div>
+                        <div class="result-item">
+                            <span>Classification:</span>
+                            <span id="classification-result">None</span>
+                        </div>
+                        <div class="result-item">
+                            <span>Confidence:</span>
+                            <span id="confidence-score">0%</span>
+                        </div>
+                        <div class="result-item">
+                            <span>Auto-increment plastic:</span>
+                            <label class="switch">
+                                <input type="checkbox" id="auto-increment">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="model-status" class="model-status">
+                        Loading AI model...
+                    </div>
+                </div>
+            </div>
+
             <!-- System Overview Panel -->
             <div class="panel system-overview">
                 <div class="panel-header">

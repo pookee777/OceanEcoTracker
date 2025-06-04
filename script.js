@@ -292,8 +292,9 @@ class EnvironmentalDashboard {
         this.addDataPoint(plastic, fuel, 'plastic');
         this.updateChart('fuel', [this.plasticData, this.fuelData]);
         this.updateEnvironmentalScore();
-        const totalfuel = this.fuelData.reduce((sum, val) => sum + val, 0);
-        document.getElementById('total-fuel').textContent = totalfuel.toFixed(1) + ' mL';
+         this.fuelData.push(fuel);
+        const totalfuelGenerated = this.fuelData.reduce((sum, val) => sum + val, 0);
+        document.getElementById('total-fuel').textContent = totalfuelGenerated.toFixed(1) + ' mL';
     }
 
     addDataPoint(value1, value2, type) {

@@ -289,12 +289,11 @@ class EnvironmentalDashboard {
         
         document.getElementById('fuel-generated').textContent = fuel.toFixed(1);
         
-        // Update overview metrics
-        document.getElementById('total-fuel').textContent = fuel.toFixed(1) + ' mL';
-        
         this.addDataPoint(plastic, fuel, 'plastic');
         this.updateChart('fuel', [this.plasticData, this.fuelData]);
         this.updateEnvironmentalScore();
+        const totalfuel = this.fuelData.reduce((sum, val) => sum + val, 0);
+        document.getElementById('total-fuel').textContent = totalfuel.toFixed(1) + ' mL';
     }
 
     addDataPoint(value1, value2, type) {

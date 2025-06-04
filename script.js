@@ -6,7 +6,7 @@ class EnvironmentalDashboard {
         this.isDetecting = false;
         this.timeLabels = [];
         this.maxDataPoints = 20;
-        
+        this.totalCO2Captured = 0;
         // Data arrays for charts
         this.phData = [];
         this.turbidityData = [];
@@ -275,7 +275,7 @@ class EnvironmentalDashboard {
         
         // Update efficiency rate
         this.updateEfficiencyRate(co2);
-        this.totalCO2Captured = 0;
+        
         this.totalCO2Captured += capture;
         // Update overview metrics
         document.getElementById('total-co2').textContent = this.totalCO2Captured.toFixed(1) + ' grams';

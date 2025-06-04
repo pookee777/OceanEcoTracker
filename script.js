@@ -48,10 +48,10 @@ class EnvironmentalDashboard {
         const display = document.getElementById(displayId);
 
         const updateValue = (value) => {
-            input.value = value;
-            slider.value = value;
-            display.textContent = value;
-            if (callback) callback();
+             if (input.value !== value) input.value = value;
+             if (slider.value !== value) slider.value = value;
+             display.textContent = value;
+             if (callback) callback();
         };
 
         input.addEventListener('input', (e) => updateValue(e.target.value));

@@ -7,6 +7,7 @@ class EnvironmentalDashboard {
         this.timeLabels = [];
         this.maxDataPoints = 20;
         this.totalCO2Captured = 0;
+        this.totalfuelGenerated = 0;
         // Data arrays for charts
         this.phData = [];
         this.turbidityData = [];

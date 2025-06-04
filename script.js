@@ -275,9 +275,10 @@ class EnvironmentalDashboard {
         
         // Update efficiency rate
         this.updateEfficiencyRate(co2);
-        
+        this.totalCO2Captured = 0;
+        this.totalCO2Captured += capture;
         // Update overview metrics
-        document.getElementById('total-co2').textContent = capture.toFixed(1) + ' grams';
+        document.getElementById('total-co2').textContent = this.totalCO2Captured.toFixed(1) + ' grams';
         
         this.addDataPoint(co2, capture, 'co2');
         this.updateChart('co2', [this.co2Data, this.captureData]);

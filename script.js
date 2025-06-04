@@ -268,20 +268,18 @@ class EnvironmentalDashboard {
     }
 
     updateCO2Data() {
-        const co2 = parseFloat(document.getElementById('co2-input').value);
+       const co2 = parseFloat(document.getElementById('co2-input').value);
         const capture = (co2 / 1000) * 2 * 1.96; // Formula: (CO₂ / 1000) × 2 × 1.96 g
         
         document.getElementById('co2-capture').textContent = capture.toFixed(1);
         
         // Update efficiency rate
         this.updateEfficiencyRate(co2);
-                
+        
         this.addDataPoint(co2, capture, 'co2');
         this.updateChart('co2', [this.co2Data, this.captureData]);
-        
-        this.totalCO2Captured = this.captureData.reduce((sum, val) => sum + val, 0);
-        // Update overview metrics
-        document.getElementById('total-co2').textContent = this.totalCO2Captured.toFixed(1) + ' grams';
+        const totalCO2Captured = this.captureData.reduce((sum, val) => sum + val, 0);
+        document.getElementById('total-co2').textContent = totalCO2Captured.toFixed(1) + ' grams';
 
     }
 

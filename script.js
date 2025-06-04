@@ -279,7 +279,7 @@ class EnvironmentalDashboard {
         this.addDataPoint(co2, capture, 'co2');
         this.updateChart('co2', [this.co2Data, this.captureData]);
         
-        this.totalCO2Captured += this.captureData.reduce((sum, val) => sum + val, 0);
+        this.totalCO2Captured = this.captureData.reduce((sum, val) => sum + val, 0);
         // Update overview metrics
         document.getElementById('total-co2').textContent = this.totalCO2Captured.toFixed(1) + ' grams';
 

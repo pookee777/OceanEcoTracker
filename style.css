@@ -81,7 +81,7 @@ body {
 }
 
 .panel-header {
-    background: linear-gradient(135deg, hsl(var(--medium-teal)), hsl(var(--dark-teal)));
+    background: hsl(var(--medium-teal));
     color: white;
     padding: 20px;
 }
@@ -403,15 +403,15 @@ input:checked + .slider:before {
 }
 
 .water-stat .stat-icon {
-    background: linear-gradient(135deg, hsl(var(--light-teal)), hsl(var(--medium-teal)));
+    background: hsl(var(--light-teal));
 }
 
 .co2-stat .stat-icon {
-    background: linear-gradient(135deg, hsl(var(--medium-teal)), hsl(var(--dark-teal)));
+    background: hsl(var(--medium-teal));
 }
 
 .fuel-stat .stat-icon {
-    background: linear-gradient(135deg, hsl(var(--dark-teal)), hsl(var(--medium-teal)));
+    background: hsl(var(--dark-teal));
 }
 
 .stat-content h3 {

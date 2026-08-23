@@ -402,18 +402,6 @@ input:checked + .slider:before {
     color: white;
 }
 
-.water-stat .stat-icon {
-    background: hsl(var(--light-teal));
-}
-
-.co2-stat .stat-icon {
-    background: hsl(var(--medium-teal));
-}
-
-.fuel-stat .stat-icon {
-    background: hsl(var(--dark-teal));
-}
-
 .stat-content h3 {
     margin: 0 0 8px 0;
     font-size: 1.3rem;
